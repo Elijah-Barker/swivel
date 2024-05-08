@@ -29,9 +29,10 @@ LAST_CPU_CORE := $(shell echo "$$(( $$(nproc --all) - 1 ))" )
 FOUND_BTBMODULE := $(shell lsmod | grep "cool")
 
 bootstrap:
+	export DEBIAN_FRONTEND=noninteractive 
 	if [ -x "$(shell command -v apt)" ]; then \
-	 	if [[ "$(shell apt-cache search --names-only '^python$')" ]]; then sudo apt -y install python; else sudo apt -y install python3 python-is-python3; fi; \
-		sudo apt -y install curl cmake msr-tools cpuid cpufrequtils npm gcc g++ clang gdb  ninja-build; \
+	 	if [[ "$(shell apt-cache search --names-only '^python$')" ]]; then DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install python; else DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install python3 python-is-python3; fi; \
+		DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install curl cmake msr-tools cpuid cpufrequtils npm gcc g++ clang gdb  ninja-build; \
 	elif [ -x "$(shell command -v dnf)" ]; then \
 		sudo dnf -y install curl cmake msr-tools cpuid cpufrequtils npm  gcc g++ clang gdb python ninja-build; \
 	else \
